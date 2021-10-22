@@ -20,7 +20,7 @@ module.exports = {
     return foundUser;
   },
   // create a user, sign a token, and send it back (to client/src/components/SignUpForm.js)
-  async addUser(_, args) {
+  async addUser(parent, args) {
     const user = await User.create(args);
 
     if (!user) {
@@ -31,7 +31,7 @@ module.exports = {
   },
   // login a user, sign a token, and send it back (to client/src/components/LoginForm.js)
   // {body} is destructured req.body
-  async login(_, args) {
+  async login(parent, args) {
     const { username, email, password } = args;
     const user = await User.findOne({ $or: [{ username }, { email }] });
     if (!user) {
