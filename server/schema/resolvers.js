@@ -1,5 +1,5 @@
 const {
-    createUser,
+    addUser,
     login
 } = require('../controllers/user-controller');
 
@@ -8,7 +8,7 @@ const resolvers = {
         test: () => "Hello World"
     },
     Mutation: {
-        createUser,
+        addUser,
         login
     }
 };
