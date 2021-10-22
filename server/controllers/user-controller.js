@@ -1,3 +1,5 @@
+const { UserInputError } = require('apollo-server-express')
+
 // import user model
 const { User } = require('../models');
 // import sign token function from auth
@@ -28,19 +30,20 @@ module.exports = {
   },
   // login a user, sign a token, and send it back (to client/src/components/LoginForm.js)
   // {body} is destructured req.body
-  async login({ body }, res) {
-    const user = await User.findOne({ $or: [{ username: body.username }, { email: body.email }] });
+  async login(_, args) {
+    const { username, email, password } = args;
+    const user = await User.findOne({ $or: [{ username }, { email }] });
     if (!user) {
-      return res.status(400).json({ message: "Can't find this user" });
+      throw new UserInputError("Can't find this user");
     }
 
-    const correctPw = await user.isCorrectPassword(body.password);
+    const correctPw = await user.isCorrectPassword(password);
 
     if (!correctPw) {
-      return res.status(400).json({ message: 'Wrong password!' });
+      throw new  UserInputError('Wrong password!');
     }
     const token = signToken(user);
-    res.json({ token, user });
+    return { token, user };
   },
   // save a book to a user's `savedBooks` field by adding it to the set (to prevent duplicates)
   // user comes from `req.user` created in the auth middleware function
