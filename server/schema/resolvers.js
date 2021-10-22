@@ -1,11 +1,12 @@
 const {
+    me,
     addUser,
     login
 } = require('../controllers/user-controller');
 
 const resolvers = {
     Query: {
-        test: () => "Hello World"
+        me
     },
     Mutation: {
         addUser,

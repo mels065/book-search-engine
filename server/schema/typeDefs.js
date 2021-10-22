@@ -22,7 +22,7 @@ const typeDefs = gql`
     }
 
     type Query {
-        test: String
+        me: User
     }
 
     type Mutation {
