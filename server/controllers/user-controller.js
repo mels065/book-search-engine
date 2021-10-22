@@ -23,7 +23,7 @@ module.exports = {
     const user = await User.create(args);
 
     if (!user) {
-      throw new Error('User could not be created');
+      throw new UserInputError('User could not be created');
     }
     const token = signToken(user);
     return { token, user };
