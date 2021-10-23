@@ -1,4 +1,4 @@
-const { UserInputError } = require('apollo-server-express')
+const { UserInputError, AuthenticationError } = require('apollo-server-express');
 
 // import user model
 const { User } = require('../models');
@@ -50,6 +50,8 @@ module.exports = {
   // user comes from `req.user` created in the auth middleware function
   async saveBook(parent, args, context) {
     const { user } = context;
+    if (!user) throw new AuthenticationError("Action is not authenticated");
+    
     try {
       const updatedUser = await User.findOneAndUpdate(
         { _id: user._id },
@@ -64,6 +66,8 @@ module.exports = {
   // remove a book from `savedBooks`
   async removeBook(parent, args, context) {
     const { user } = context;
+    if (!user) throw new AuthenticationError("Action is not authenticated");
+
     const updatedUser = await User.findOneAndUpdate(
       { _id: user._id },
       { $pull: { savedBooks: { bookId: args.bookId } } },
