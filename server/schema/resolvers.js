@@ -1,7 +1,8 @@
 const {
     me,
     addUser,
-    login
+    login,
+    saveBook
 } = require('../controllers/user-controller');
 
 const resolvers = {
@@ -10,7 +11,8 @@ const resolvers = {
     },
     Mutation: {
         addUser,
-        login
+        login,
+        saveBook
     }
 };
 

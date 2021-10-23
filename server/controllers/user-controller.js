@@ -48,18 +48,17 @@ module.exports = {
   },
   // save a book to a user's `savedBooks` field by adding it to the set (to prevent duplicates)
   // user comes from `req.user` created in the auth middleware function
-  async saveBook({ user, body }, res) {
-    console.log(user);
+  async saveBook(parent, args, context) {
+    const { user } = context;
     try {
       const updatedUser = await User.findOneAndUpdate(
         { _id: user._id },
-        { $addToSet: { savedBooks: body } },
+        { $addToSet: { savedBooks: args } },
         { new: true, runValidators: true }
       );
-      return res.json(updatedUser);
+      return updatedUser;
     } catch (err) {
-      console.log(err);
-      return res.status(400).json(err);
+      throw new UserInputError(err);
     }
   },
   // remove a book from `savedBooks`
