@@ -28,9 +28,10 @@ const LoginForm = () => {
     }
 
     try {
-      const { data: { user, token } } = await login({
+      const { data } = await login({
         variables: { ...userFormData }
-      })
+      });
+      const { login: { user, token } } = data;
       console.log(user);
       Auth.login(token);
     } catch (err) {
